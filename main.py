@@ -44,12 +44,63 @@ def e_extrato(saldo, extrato):
         print(extrato)
         print(f"\nSaldo:\t\tR$ {saldo:.2f}")
     print("-"*15)
+
+def new_user(usuario):
+    cpf = input("Digite o cpf [somente número]")
+
+    #verificar se usuario existe
+    for i in usuario:
+        if i["cpf"] == cpf:
+            print("Usuario já existe\n")
+            return None
+
+    #se não existe criar um dic e adicionar a lista
+    nome = str(input("Digite o nome do usuario\n"))
+    data_nasc = (input("Digite sua data de nascimento (dd-mm-aaaa)\n"))
+    endereco = input("Informe seu endereço\n")
+
+    usuario.append({"nome": nome, "data_nascimento": data_nasc, "cpf" : cpf, "endereco": endereco})
+    print("Usuario criado com sucesso\n")
+
+def new_account(n_conta, contas, AGENCIA, usuario):
+    cpf = input("Digite o cpf do usuario\n")
+
+    ver = 0
+    #verificar se usuario exite
+    for i in usuario:
+        if i["cpf"] == cpf:
+            ver = 1
+
+            n_conta = n_conta + 1
+            contas.append({"agencia": AGENCIA, "numero_conta": n_conta, "usuario": i})
+
+            print("Conta cadastrada com sucesso")
+
+            break
+
+    if ver == 0:
+        print("Não existe usuario cadastrado\n")
+        return None
+
+    return n_conta
+
+def list_acc(contas):
+    for i in contas:
+        print(f"Agencia: {i['agencia']}")
+        print(f"Numero da conta: {i['numero_conta']}")
+        print(f"Usuario: {i['usuario']['nome']}")
+        print("-"*20)
+
 def main():
     saldo = 0
     limite = 500
     extrato = ""
     numeros_saques = 0
+    AGENCIA = "0001"
     LIMITE_SAQUES = 3
+    usuario = []
+    n_conta = 0
+    contas = []
 
 
     while True:
@@ -68,6 +119,15 @@ def main():
 
         elif (opcao == "e"):
             e_extrato(saldo, extrato)
+
+        elif (opcao == "nu"):
+            new_user(usuario)
+
+        elif (opcao == "nc"):
+            n_conta = new_account(n_conta, contas, AGENCIA, usuario)
+
+        elif (opcao == "lc"):
+            list_acc(contas)
 
         elif (opcao == "q"):
             break
